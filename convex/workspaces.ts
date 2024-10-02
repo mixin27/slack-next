@@ -24,7 +24,9 @@ export const get = query({
       .withIndex("by_user_id", (q) => q.eq("userId", userId))
       .collect();
 
-    const workspaceIds = members.map((member) => member.workspaceId);
+    const workspaceIds = members
+      // .sort((a, b) => b._creationTime - a._creationTime)
+      .map((member) => member.workspaceId);
 
     const workspaces = [];
     // we here use `of` because we need values
@@ -92,6 +94,7 @@ export const getInfoById = query({
     return {
       name: workspace?.name,
       isMember: !!member,
+      isAdmin: member?.role === "admin",
     };
   },
 });
@@ -166,16 +169,23 @@ export const remove = mutation({
       throw new Error("Unauthorized");
     }
 
-    // TODO: for channel
-    const [members] = await Promise.all([
+    const [members, channels] = await Promise.all([
       ctx.db
         .query("members")
+        .withIndex("by_workspace_id", (q) => q.eq("workspaceId", args.id))
+        .collect(),
+      ctx.db
+        .query("channels")
         .withIndex("by_workspace_id", (q) => q.eq("workspaceId", args.id))
         .collect(),
     ]);
 
     for (const member of members) {
       await ctx.db.delete(member._id);
+    }
+
+    for (const channel of channels) {
+      await ctx.db.delete(channel._id);
     }
 
     await ctx.db.delete(args.id);
