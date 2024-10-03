@@ -37,10 +37,7 @@ const UserButton = () => {
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="center" side="right" className="w-60">
-        <DropdownMenuItem
-          onClick={async () => await signOut()}
-          className="h-10"
-        >
+        <DropdownMenuItem onClick={() => signOut()} className="h-10">
           <LogOut className="size-4 mr-2" />
           Log out
         </DropdownMenuItem>
