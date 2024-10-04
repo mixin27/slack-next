@@ -10,6 +10,8 @@ import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { useRemoveMessage } from "@/features/messages/api/use-remove-message";
 import { useConfirm } from "@/hooks/use-confirm";
+import { useToggleReaction } from "@/features/reactions/api/use-toggle-reaction";
+import Reactions from "../reactions";
 
 type Props = {
   id: Id<"messages">;
@@ -47,7 +49,7 @@ const formatFullTime = (value: Date) => {
 
 const Message = ({
   id,
-  memberId,
+  // memberId,
   authorName = "Member",
   authorImage,
   isAuthor,
@@ -60,9 +62,9 @@ const Message = ({
   setEditingId,
   isCompact,
   hideThreadButton,
-  threadCount,
-  threadImage,
-  threadTimestamp,
+  // threadCount,
+  // threadImage,
+  // threadTimestamp,
 }: Props) => {
   const [ConfirmDialog, confirm] = useConfirm(
     "Delete message",
@@ -73,6 +75,7 @@ const Message = ({
     useUpdateMessage();
   const { mutate: removeMessage, isPending: isRemovingMessage } =
     useRemoveMessage();
+  const { mutate: toggleReaction } = useToggleReaction();
 
   const isPending = isUpdatingMessage || isRemovingMessage;
 
@@ -105,6 +108,17 @@ const Message = ({
         },
         onError: () => {
           toast.error("Failed to delete message");
+        },
+      }
+    );
+  };
+
+  const handleReaction = async (value: string) => {
+    toggleReaction(
+      { messageId: id, value },
+      {
+        onError: () => {
+          toast.error("Failed to toggle reaction");
         },
       }
     );
@@ -148,6 +162,8 @@ const Message = ({
                     (edited)
                   </span>
                 ) : null}
+
+                <Reactions data={reactions} onChange={handleReaction} />
               </div>
             )}
           </div>
@@ -159,7 +175,7 @@ const Message = ({
               handleEdit={() => setEditingId(id)}
               handleThread={() => {}}
               handleDelete={handleRemove}
-              handleReaction={() => {}}
+              handleReaction={handleReaction}
               hideThreadButton={hideThreadButton}
             />
           )}
@@ -221,6 +237,8 @@ const Message = ({
               {updatedAt ? (
                 <span className="text-xs text-muted-foreground">(edited)</span>
               ) : null}
+
+              <Reactions data={reactions} onChange={handleReaction} />
             </div>
           )}
         </div>
@@ -232,7 +250,7 @@ const Message = ({
             handleEdit={() => setEditingId(id)}
             handleThread={() => {}}
             handleDelete={handleRemove}
-            handleReaction={() => {}}
+            handleReaction={handleReaction}
             hideThreadButton={hideThreadButton}
           />
         )}
