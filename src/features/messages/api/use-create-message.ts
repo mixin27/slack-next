@@ -4,10 +4,14 @@ import { useCallback, useMemo, useState } from "react";
 import { Id } from "../../../../convex/_generated/dataModel";
 
 type RequestType = {
+  body: string;
   workspaceId: Id<"workspaces">;
-  joinCode: string;
+  image?: Id<"_storage">;
+  channelId?: Id<"channels">;
+  parentMessageId?: Id<"messages">;
+  // TODO: add conversationId
 };
-type ResponseType = Id<"workspaces"> | null;
+type ResponseType = Id<"messages"> | null;
 
 type Options = {
   onSuccess?: (data: ResponseType) => void;
@@ -16,8 +20,8 @@ type Options = {
   throwError?: boolean;
 };
 
-export const useJoinWorkspace = () => {
-  const mutation = useMutation(api.workspaces.join);
+export const useCreateMessage = () => {
+  const mutation = useMutation(api.messages.create);
 
   const [data, setData] = useState<ResponseType>(null);
   const [error, setError] = useState<Error | null>(null);
