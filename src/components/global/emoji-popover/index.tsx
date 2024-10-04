@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
@@ -17,14 +18,13 @@ import {
 type Props = {
   children: React.ReactNode;
   hint?: string;
-  onEmojiSelect: (emoji: unknown) => void;
+  onEmojiSelect: (emoji: any) => void;
 };
 
 const EmojiPopover = ({ children, hint = "Emoji", onEmojiSelect }: Props) => {
   const [popoverOpen, setPopoverOpen] = useState(false);
   const [tooltipOpen, setTooltipOpen] = useState(false);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onSelect = (emoji: any) => {
     onEmojiSelect(emoji);
     setPopoverOpen(false);

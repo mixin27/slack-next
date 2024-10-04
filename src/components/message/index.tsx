@@ -4,6 +4,7 @@ import { format, isToday, isYesterday } from "date-fns";
 import Hint from "../global/hint";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import Thumbnail from "../thumbnail";
+import Toolbar from "../toolbar";
 
 type Props = {
   id: Id<"messages">;
@@ -24,7 +25,7 @@ type Props = {
   isEditing: boolean;
   setEditingId: (id: Id<"messages"> | null) => void;
   isCompact?: boolean;
-  handleThreadButton?: boolean;
+  hideThreadButton?: boolean;
   threadCount?: number;
   threadImage?: string;
   threadTimestamp?: number;
@@ -50,7 +51,7 @@ const Message = ({
   isEditing,
   setEditingId,
   isCompact,
-  handleThreadButton,
+  hideThreadButton,
   threadCount,
   threadImage,
   threadTimestamp,
@@ -113,6 +114,18 @@ const Message = ({
           ) : null}
         </div>
       </div>
+
+      {!isEditing && (
+        <Toolbar
+          isAuthor={isAuthor}
+          isPending={false}
+          handleEdit={() => setEditingId(id)}
+          handleThread={() => {}}
+          handleDelete={() => {}}
+          handleReaction={() => {}}
+          hideThreadButton={hideThreadButton}
+        />
+      )}
     </div>
   );
 };
