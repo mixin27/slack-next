@@ -8,8 +8,8 @@ type RequestType = {
   workspaceId: Id<"workspaces">;
   image?: Id<"_storage">;
   channelId?: Id<"channels">;
+  conversationId?: Id<"conversations">;
   parentMessageId?: Id<"messages">;
-  // TODO: add conversationId
 };
 type ResponseType = Id<"messages"> | null;
 
