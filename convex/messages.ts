@@ -101,7 +101,7 @@ export const get = query({
 
     return {
       ...results,
-      page: [
+      page: (
         await Promise.all(
           results.page.map(async (message) => {
             const member = await populateMember(ctx, message.memberId);
@@ -162,8 +162,8 @@ export const get = query({
               threadTimestamp: thread.timestamp,
             };
           })
-        ),
-      ].filter(
+        )
+      ).filter(
         (message): message is NonNullable<typeof message> => message !== null
       ),
     };
