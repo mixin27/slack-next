@@ -7,7 +7,7 @@ interface UseGetChannelProps {
   channelId: Id<"channels">;
 }
 
-export const UseGetChannel = ({ channelId }: UseGetChannelProps) => {
+export const useGetChannel = ({ channelId }: UseGetChannelProps) => {
   const data = useQuery(api.channels.getById, { channelId });
   const isLoading = data === undefined;
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { UseGetChannels } from "@/features/channels/api/use-get-channels";
+import { useGetChannels } from "@/features/channels/api/use-get-channels";
 import { useCreateChannelModal } from "@/features/channels/store/use-create-channel-modal";
 import { useCurrentMember } from "@/features/members/api/use-current-member";
 import { useGetWorkspace } from "@/features/workspaces/api/get-workspace";
@@ -24,7 +24,7 @@ const WorkspaceIdPage = () => {
   const { data: member, isLoading: memberLoading } = useCurrentMember({
     workspaceId,
   });
-  const { data: channels, isLoading: channelsLoading } = UseGetChannels({
+  const { data: channels, isLoading: channelsLoading } = useGetChannels({
     workspaceId,
   });
 

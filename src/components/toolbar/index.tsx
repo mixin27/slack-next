@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "../ui/button";
-import { MessageSquareTextIcon, Pencil, Smile, Trash } from "lucide-react";
+import { MessageSquareReplyIcon, Pencil, Smile, Trash } from "lucide-react";
 import Hint from "../global/hint";
 import EmojiPopover from "../global/emoji-popover";
 
@@ -43,7 +43,7 @@ const Toolbar = ({
               disabled={isPending}
               onClick={handleThread}
             >
-              <MessageSquareTextIcon className="size-4" />
+              <MessageSquareReplyIcon className="size-4" />
             </Button>
           </Hint>
         )}

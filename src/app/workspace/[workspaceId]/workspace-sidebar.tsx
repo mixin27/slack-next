@@ -11,7 +11,7 @@ import {
 import React from "react";
 import WorkspaceHeader from "./workspace-header";
 import SidebarItem from "./sidebar-item";
-import { UseGetChannels } from "@/features/channels/api/use-get-channels";
+import { useGetChannels } from "@/features/channels/api/use-get-channels";
 import { WorkspaceSection } from "./workspace-section";
 import { useGetMembers } from "@/features/members/api/use-get-members";
 import UserItem from "./user-item";
@@ -31,7 +31,7 @@ const WorkspaceSidebar = () => {
   const { data: workspace, isLoading: workspaceLoading } = useGetWorkspace({
     id: workspaceId,
   });
-  const { data: channels } = UseGetChannels({ workspaceId });
+  const { data: channels } = useGetChannels({ workspaceId });
   const { data: members } = useGetMembers({ workspaceId });
 
   if (workspaceLoading || memberLoading) {

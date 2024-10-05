@@ -1,6 +1,6 @@
 "use client";
 
-import { UseGetChannel } from "@/features/channels/api/use-get-channel";
+import { useGetChannel } from "@/features/channels/api/use-get-channel";
 import { useChannelId } from "@/hooks/use-channel-id";
 import { Loader, TriangleAlert } from "lucide-react";
 import ChannelHeader from "./channel-header";
@@ -12,7 +12,7 @@ const ChannelIdPage = () => {
   const channelId = useChannelId();
 
   const { results, status, loadMore } = useGetMessages({ channelId });
-  const { data: channel, isLoading: channelLoading } = UseGetChannel({
+  const { data: channel, isLoading: channelLoading } = useGetChannel({
     channelId,
   });
 
@@ -32,6 +32,8 @@ const ChannelIdPage = () => {
       </div>
     );
   }
+
+  console.log({ status });
 
   return (
     <div className="flex flex-col h-full">

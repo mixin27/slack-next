@@ -171,6 +171,70 @@ export const get = query({
   },
 });
 
+export const getById = query({
+  args: {
+    id: v.id("messages"),
+  },
+  handler: async (ctx, args) => {
+    const userId = await getAuthUserId(ctx);
+    if (!userId) return null;
+
+    const message = await ctx.db.get(args.id);
+    if (!message) return null;
+
+    const currentMember = await getMember(ctx, message.workspaceId, userId);
+    if (!currentMember) return null;
+
+    const member = await populateMember(ctx, message.memberId);
+    if (!member) return null;
+
+    const user = await populateUser(ctx, member.userId);
+    if (!user) return null;
+
+    const reactions = await populateReactions(ctx, message._id);
+    const reactionsWithCount = reactions.map((reaction) => {
+      return {
+        ...reaction,
+        count: reactions.filter((r) => r.value === reaction.value).length,
+      };
+    });
+
+    const reducedReactions = reactionsWithCount.reduce(
+      (acc, reaction) => {
+        const existingReaction = acc.find((r) => r.value === reaction.value);
+        if (existingReaction) {
+          existingReaction.memberIds = Array.from(
+            new Set([...existingReaction.memberIds, reaction.memberId])
+          );
+        } else {
+          acc.push({ ...reaction, memberIds: [reaction.memberId] });
+        }
+
+        return acc;
+      },
+      [] as (Doc<"reactions"> & {
+        count: number;
+        memberIds: Id<"members">[];
+      })[]
+    );
+
+    const reactionsWithoutMemberIdProperty = reducedReactions.map(
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      ({ memberId, ...rest }) => rest
+    );
+
+    return {
+      ...message,
+      image: message.image
+        ? await ctx.storage.getUrl(message.image)
+        : undefined,
+      user,
+      member,
+      reactions: reactionsWithoutMemberIdProperty,
+    };
+  },
+});
+
 export const create = mutation({
   args: {
     body: v.string(),
