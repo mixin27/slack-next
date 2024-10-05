@@ -31,8 +31,8 @@ const formatDateLabel = (datestr: string) => {
 };
 
 const MessageList = ({
-  memberName,
-  memberImage,
+  // memberName,
+  // memberImage,
   channelName,
   channelCreationTime,
   variant = "channel",
@@ -127,7 +127,7 @@ const MessageList = ({
             return () => observer.disconnect();
           }
         }}
-      ></div>
+      />
 
       {isLoadingMore && (
         <div className="text-center my-2 relative">
