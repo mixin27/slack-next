@@ -17,10 +17,12 @@ import { useGetMembers } from "@/features/members/api/use-get-members";
 import UserItem from "./user-item";
 import { useCreateChannelModal } from "@/features/channels/store/use-create-channel-modal";
 import { useChannelId } from "@/hooks/use-channel-id";
+import { useMemberId } from "@/hooks/use-member-id";
 
 const WorkspaceSidebar = () => {
   const workspaceId = useWorkspaceId();
   const channelId = useChannelId();
+  const memberId = useMemberId();
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_open, setOpen] = useCreateChannelModal();
@@ -89,6 +91,7 @@ const WorkspaceSidebar = () => {
             id={item._id}
             image={item.user.image}
             label={item.user.name}
+            variant={item._id === memberId ? "active" : "default"}
           />
         ))}
       </WorkspaceSection>

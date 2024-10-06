@@ -8,13 +8,14 @@ import { Id } from "../../../convex/_generated/dataModel";
 import { useWorkspaceId } from "@/hooks/use-workspace-id";
 import { useCurrentMember } from "@/features/members/api/use-current-member";
 import { Loader } from "lucide-react";
+import ConversationHero from "../conversation-hero";
 
 const TIME_THRESHOLD = 5;
 
 type MessageListProps = {
   memberName?: string;
   memberImage?: string;
-  channelName: string;
+  channelName?: string;
   channelCreationTime?: number;
   variant?: "channel" | "thread" | "conversation";
   data: GetMessagesReturnType | undefined;
@@ -31,8 +32,8 @@ const formatDateLabel = (datestr: string) => {
 };
 
 const MessageList = ({
-  // memberName,
-  // memberImage,
+  memberName,
+  memberImage,
   channelName,
   channelCreationTime,
   variant = "channel",
@@ -141,6 +142,10 @@ const MessageList = ({
 
       {variant === "channel" && channelName && channelCreationTime && (
         <ChannelHero name={channelName} creationTime={channelCreationTime} />
+      )}
+
+      {variant === "conversation" && (
+        <ConversationHero name={memberName} image={memberImage} />
       )}
     </div>
   );
