@@ -70,7 +70,7 @@ const Message = ({
   threadTimestamp,
   threadName,
 }: Props) => {
-  const { onOpenMessage, onClose, parentMessageId } = usePanel();
+  const { onOpenMessage, onClose, parentMessageId, onOpenProfile } = usePanel();
 
   const [ConfirmDialog, confirm] = useConfirm(
     "Delete message",
@@ -81,9 +81,11 @@ const Message = ({
     useUpdateMessage();
   const { mutate: removeMessage, isPending: isRemovingMessage } =
     useRemoveMessage();
-  const { mutate: toggleReaction } = useToggleReaction();
+  const { mutate: toggleReaction, isPending: isTogglingReaction } =
+    useToggleReaction();
 
-  const isPending = isUpdatingMessage || isRemovingMessage;
+  const isPending =
+    isUpdatingMessage || isRemovingMessage || isTogglingReaction;
 
   const handleUpdate = ({ body }: { body: string }) => {
     updateMessage(
@@ -214,7 +216,7 @@ const Message = ({
         )}
       >
         <div className="flex items-start gap-2">
-          <button>
+          <button onClick={() => onOpenProfile(memberId)}>
             <Avatar>
               <AvatarImage src={authorImage} />
               <AvatarFallback>{avatarFallback}</AvatarFallback>
@@ -236,7 +238,7 @@ const Message = ({
               <div className="text-sm">
                 <button
                   className="font-bold text-primary hover:underline"
-                  onClick={() => {}}
+                  onClick={() => onOpenProfile(memberId)}
                 >
                   {authorName}
                 </button>
