@@ -13,6 +13,7 @@ import { useConfirm } from "@/hooks/use-confirm";
 import { useToggleReaction } from "@/features/reactions/api/use-toggle-reaction";
 import Reactions from "../reactions";
 import { usePanel } from "@/hooks/use-panel";
+import Threadbar from "../thead-bar";
 
 type Props = {
   id: Id<"messages">;
@@ -37,6 +38,7 @@ type Props = {
   threadCount?: number;
   threadImage?: string;
   threadTimestamp?: number;
+  threadName?: string;
 };
 
 const Renderer = dynamic(() => import("@/components/renderer"), { ssr: false });
@@ -50,7 +52,7 @@ const formatFullTime = (value: Date) => {
 
 const Message = ({
   id,
-  // memberId,
+  memberId,
   authorName = "Member",
   authorImage,
   isAuthor,
@@ -63,9 +65,10 @@ const Message = ({
   setEditingId,
   isCompact,
   hideThreadButton,
-  // threadCount,
-  // threadImage,
-  // threadTimestamp,
+  threadCount,
+  threadImage,
+  threadTimestamp,
+  threadName,
 }: Props) => {
   const { onOpenMessage, onClose, parentMessageId } = usePanel();
 
@@ -169,6 +172,14 @@ const Message = ({
                 ) : null}
 
                 <Reactions data={reactions} onChange={handleReaction} />
+
+                <Threadbar
+                  count={threadCount}
+                  image={threadImage}
+                  timestamp={threadTimestamp}
+                  name={threadName}
+                  onClick={() => onOpenMessage(id)}
+                />
               </div>
             )}
           </div>
@@ -244,6 +255,14 @@ const Message = ({
               ) : null}
 
               <Reactions data={reactions} onChange={handleReaction} />
+
+              <Threadbar
+                count={threadCount}
+                image={threadImage}
+                timestamp={threadTimestamp}
+                name={threadName}
+                onClick={() => onOpenMessage(id)}
+              />
             </div>
           )}
         </div>
