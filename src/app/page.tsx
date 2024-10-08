@@ -5,6 +5,7 @@ import { useCreateWorkspaceModal } from "@/features/workspaces/store/create-work
 import { useGetWorkspaces } from "@/features/workspaces/api/get-workspaces";
 import { useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
+import { Loader } from "lucide-react";
 
 export default function Home() {
   const router = useRouter();
